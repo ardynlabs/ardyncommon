@@ -1,4 +1,4 @@
-package main
+package structs
 
 type ArdynDefaultResponse struct {
 	Code    int    `json:"code"`
