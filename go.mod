@@ -1,4 +1,4 @@
-module ardyn.io/ardyncommon
+module github.com/ardynlabs/ardyncommon
 
 go 1.21.4
 
