@@ -8,14 +8,16 @@ import (
 
 //-------------------------------------------------------
 
-func ArdynWatch(file *string, action func()) {
+func ArdynWatch(file *string, callback func(string), filename string) {
 
 	// Watch for changes in the configuration file
 	// Better keep this code in ArdynCommon
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
+
 		log.Fatalf("Failed to create watcher: %v", err)
+
 	}
 
 	//Defer close the watcher
@@ -25,23 +27,34 @@ func ArdynWatch(file *string, action func()) {
 	err = watcher.Add(*file)
 
 	if err != nil {
+
 		log.Fatalf("Failed to add file to watcher: %v", err)
+
 	}
 
 	// Let's start the event loop
 	for {
+
 		select {
+
 		case event := <-watcher.Events:
 			// Checks for any modification in config file
 			if event.Op&fsnotify.Write == fsnotify.Write {
-				log.Println("Configuration file changed, reloading...")
-				action()
+
+				log.Println("*** File Change Detected ***")
+
+				callback(filename)
 
 			}
+
 		case err := <-watcher.Errors:
+
 			log.Printf("Watcher error: %v", err)
+
 		}
+
 	}
+
 }
 
 //-------------------------------------------------------
