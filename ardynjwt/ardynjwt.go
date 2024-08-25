@@ -108,7 +108,7 @@ func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenData) (string, error
 
 	claims := make(jwt.MapClaims)
 
-	claims["dat"] = tokenData           // Our custom data.
+	claims["usr"] = tokenData           // Our custom data.
 	claims["exp"] = now.Add(ttl).Unix() // The expiration time after which the token must be disregarded.
 	claims["iat"] = now.Unix()          // The time at which the token was issued.
 	claims["nbf"] = now.Unix()          // The time before which the token must be disregarded.
