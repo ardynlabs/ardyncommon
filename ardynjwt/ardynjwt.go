@@ -16,12 +16,13 @@ type ArdynJwt struct {
 	publicKey  []byte
 }
 
-type TokenData struct {
-	UserId    string   `json:"userid"`
-	Firstname string   `json:"firstname"`
-	Lastname  string   `json:"lastname"`
-	Email     string   `json:"email"`
-	Roles     []string `json:"roles"`
+// https://www.iana.org/assignments/jwt/jwt.xhtml#IESG
+type TokenUserData struct {
+	UserId string `json:"userid"`
+	//Firstname string   `json:"given_name"`
+	//Lastname  string   `json:"family_name"`
+	//Email string   `json:"email"`
+	Roles []string `json:"roles"`
 }
 
 //-------------------------------------------------------------
@@ -94,7 +95,7 @@ func (jwt *ArdynJwt) loadKey(filename string) (data []byte, err error) {
 
 //-------------------------------------------------------------
 
-func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenData) (string, error) {
+func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenUserData) (string, error) {
 
 	key, err := jwt.ParseRSAPrivateKeyFromPEM(j.privateKey)
 
@@ -108,10 +109,14 @@ func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenData) (string, error
 
 	claims := make(jwt.MapClaims)
 
-	claims["usr"] = tokenData           // Our custom data.
+	//claims["usr"] = tokenData           // Our custom data.
+	claims["userid"] = tokenData.UserId
+	claims["roles"] = tokenData.Roles
 	claims["exp"] = now.Add(ttl).Unix() // The expiration time after which the token must be disregarded.
 	claims["iat"] = now.Unix()          // The time at which the token was issued.
 	claims["nbf"] = now.Unix()          // The time before which the token must be disregarded.
+
+	// User data payload
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, claims).SignedString(key)
 
@@ -127,9 +132,9 @@ func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenData) (string, error
 
 //-------------------------------------------------------------
 
-func (j *ArdynJwt) Validate(token string) (tokenData TokenData, err error) {
+func (j *ArdynJwt) Validate(token string) (tokenData TokenUserData, err error) {
 
-	tokenData = TokenData{}
+	tokenData = TokenUserData{}
 
 	err = nil
 
@@ -175,14 +180,14 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenData, err error) {
 
 	}
 
-	usr := claims["usr"].(map[string]interface{})
+	//usr := claims["usr"].(map[string]interface{})
 
-	tokenData.UserId = usr["userid"].(string)
-	tokenData.Firstname = usr["firstname"].(string)
-	tokenData.Lastname = usr["lastname"].(string)
-	tokenData.Email = usr["email"].(string)
+	tokenData.UserId = claims["userid"].(string)
+	//tokenData.Firstname = usr["firstname"].(string)
+	//tokenData.Lastname = usr["lastname"].(string)
+	//tokenData.Email = usr["email"].(string)
 
-	roles := usr["roles"].([]interface{})
+	roles := claims["roles"].([]interface{})
 
 	tokenData.Roles = make([]string, len(roles))
 
