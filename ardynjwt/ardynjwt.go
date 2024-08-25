@@ -175,7 +175,7 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenData, err error) {
 
 	}
 
-	tokenData = claims["dat"].(TokenData)
+	tokenData = claims["usr"].(TokenData)
 
 	return
 
