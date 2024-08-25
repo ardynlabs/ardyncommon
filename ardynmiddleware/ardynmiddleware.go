@@ -121,11 +121,16 @@ func (amw *ArdynMiddleware) AuthorizeWithRoles(chkRoles []string) gin.HandlerFun
 
 		roles := c.Keys["roles"].([]string)
 
+		log.Println("chkRoles: ", chkRoles)
+		log.Println("roles: ", roles)
+
 		for _, chkRole := range chkRoles {
 
 			for _, role := range roles {
 
 				if chkRole == role {
+
+					log.Println("Permission found.")
 
 					c.Next()
 
