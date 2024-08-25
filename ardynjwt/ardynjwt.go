@@ -181,7 +181,14 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenData, err error) {
 	tokenData.Firstname = usr["firstname"].(string)
 	tokenData.Lastname = usr["lastname"].(string)
 	tokenData.Email = usr["email"].(string)
-	tokenData.Roles = usr["roles"].([]string)
+
+	roles := usr["roles"].([]interface{})
+
+	tokenData.Roles = make([]string, len(roles))
+
+	for i, role := range roles {
+		tokenData.Roles[i] = role.(string)
+	}
 
 	return
 
