@@ -93,12 +93,7 @@ func (amw *ArdynMiddleware) authorize(c *gin.Context) {
 	}
 
 	c.Set("userid", tokenData.UserId)
-	//c.Set("firstname", tokenData.Firstname)
-	//c.Set("lastname", tokenData.Lastname)
-	//c.Set("email", tokenData.Email)
 	c.Set("roles", tokenData.Roles)
-
-	//c.Next()
 
 }
 

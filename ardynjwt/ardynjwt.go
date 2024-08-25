@@ -18,11 +18,8 @@ type ArdynJwt struct {
 
 // https://www.iana.org/assignments/jwt/jwt.xhtml#IESG
 type TokenUserData struct {
-	UserId string `json:"userid"`
-	//Firstname string   `json:"given_name"`
-	//Lastname  string   `json:"family_name"`
-	//Email string   `json:"email"`
-	Roles []string `json:"roles"`
+	UserId string   `json:"userid"`
+	Roles  []string `json:"roles"`
 }
 
 //-------------------------------------------------------------
@@ -180,12 +177,7 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenUserData, err error) {
 
 	}
 
-	//usr := claims["usr"].(map[string]interface{})
-
 	tokenData.UserId = claims["userid"].(string)
-	//tokenData.Firstname = usr["firstname"].(string)
-	//tokenData.Lastname = usr["lastname"].(string)
-	//tokenData.Email = usr["email"].(string)
 
 	roles := claims["roles"].([]interface{})
 
