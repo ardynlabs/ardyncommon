@@ -18,6 +18,16 @@ type ArdynMiddleware struct {
 
 //-------------------------------------------------------------
 
+func NewArdynMiddleware(jwt *ardynjwt.ArdynJwt) *ArdynMiddleware {
+
+	return &ArdynMiddleware{
+		Jwt: jwt,
+	}
+
+}
+
+//-------------------------------------------------------------
+
 func (amw *ArdynMiddleware) Authorize(c *gin.Context) {
 
 	var response ardynstructs.ArdynDefaultResponse
