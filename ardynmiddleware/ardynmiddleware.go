@@ -28,7 +28,7 @@ func NewArdynMiddleware(jwt *ardynjwt.ArdynJwt) *ArdynMiddleware {
 
 //-------------------------------------------------------------
 
-func (amw *ArdynMiddleware) Authorize(c *gin.Context) {
+func (amw *ArdynMiddleware) authorize(c *gin.Context) {
 
 	var response ardynstructs.ArdynDefaultResponse
 
@@ -103,9 +103,52 @@ func (amw *ArdynMiddleware) Authorize(c *gin.Context) {
 }
 
 //-------------------------------------------------------------
-/*
-func AuthorizeWithRoles(chkRoles []string) gin.HandlerFunc {
+
+func (amw *ArdynMiddleware) Authorize(c *gin.Context) {
+
+	amw.authorize(c)
 
 }
-*/
+
+//-------------------------------------------------------------
+
+func (amw *ArdynMiddleware) AuthorizeWithRoles(chkRoles []string) gin.HandlerFunc {
+
+	return func(c *gin.Context) {
+
+		// Call this first
+		amw.authorize(c)
+
+		roles := c.Keys["roles"].([]string)
+
+		for _, chkRole := range chkRoles {
+
+			for _, role := range roles {
+
+				if chkRole == role {
+
+					c.Next()
+
+					return
+
+				}
+
+			}
+
+		}
+
+		var response ardynstructs.ArdynDefaultResponse
+
+		response.Code = http.StatusUnauthorized
+
+		response.Message = "You do not have the right permission(s) to perform this action."
+
+		c.JSON(response.Code, response)
+
+		c.Abort()
+
+	}
+
+}
+
 //-------------------------------------------------------------
