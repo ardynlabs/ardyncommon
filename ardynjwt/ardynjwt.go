@@ -18,7 +18,7 @@ type ArdynJwt struct {
 
 // https://www.iana.org/assignments/jwt/jwt.xhtml#IESG
 type TokenUserData struct {
-	UserId string   `json:"userid"`
+	UserId string   `json:"user_id"`
 	Roles  []string `json:"roles"`
 }
 
@@ -107,7 +107,7 @@ func (j *ArdynJwt) Create(ttl time.Duration, tokenData TokenUserData) (string, e
 	claims := make(jwt.MapClaims)
 
 	//claims["usr"] = tokenData           // Our custom data.
-	claims["userid"] = tokenData.UserId
+	claims["user_id"] = tokenData.UserId
 	claims["roles"] = tokenData.Roles
 	claims["exp"] = now.Add(ttl).Unix() // The expiration time after which the token must be disregarded.
 	claims["iat"] = now.Unix()          // The time at which the token was issued.
@@ -177,7 +177,7 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenUserData, err error) {
 
 	}
 
-	tokenData.UserId = claims["userid"].(string)
+	tokenData.UserId = claims["user_id"].(string)
 
 	roles := claims["roles"].([]interface{})
 
