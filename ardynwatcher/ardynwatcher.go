@@ -11,7 +11,6 @@ import (
 func ArdynWatch(file *string, callback func(string), filename string) {
 
 	// Watch for changes in the configuration file
-	// Better keep this code in ArdynCommon
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
@@ -38,6 +37,7 @@ func ArdynWatch(file *string, callback func(string), filename string) {
 		select {
 
 		case event := <-watcher.Events:
+
 			// Checks for any modification in config file
 			if event.Op&fsnotify.Write == fsnotify.Write {
 
