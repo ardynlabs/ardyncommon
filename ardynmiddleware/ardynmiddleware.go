@@ -98,7 +98,7 @@ func (amw *ArdynMiddleware) authorize(c *gin.Context) {
 	c.Set("email", tokenData.Email)
 	c.Set("roles", tokenData.Roles)
 
-	c.Next()
+	//c.Next()
 
 }
 
@@ -107,6 +107,8 @@ func (amw *ArdynMiddleware) authorize(c *gin.Context) {
 func (amw *ArdynMiddleware) Authorize(c *gin.Context) {
 
 	amw.authorize(c)
+
+	c.Next()
 
 }
 
