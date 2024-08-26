@@ -177,6 +177,8 @@ func (j *ArdynJwt) Validate(token string) (tokenData TokenUserData, err error) {
 
 	}
 
+	log.Println("UserID from claims: ", claims["user_id"])
+
 	tokenData.UserId = claims["user_id"].(string)
 
 	roles := claims["roles"].([]interface{})
