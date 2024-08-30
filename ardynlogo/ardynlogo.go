@@ -2,7 +2,7 @@ package ardynlogo
 
 import "fmt"
 
-func PrintArdynLogo() {
+func PrintArdynLogo(name string, version string) {
 	fmt.Println("                   _             ")
 	fmt.Println("     /\\           | |            ")
 	fmt.Println("    /  \\   _ __ __| |_   _ _ __  ")
@@ -12,4 +12,5 @@ func PrintArdynLogo() {
 	fmt.Println("                      __/ |      ")
 	fmt.Println("                     |___/       ")
 	fmt.Println()
+	fmt.Println(name, version)
 }
