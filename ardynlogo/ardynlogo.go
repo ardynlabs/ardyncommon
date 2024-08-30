@@ -11,6 +11,6 @@ func PrintArdynLogo(name string, version string) {
 	fmt.Println(" /_/    \\_\\_|  \\__,_|\\__, |_| |_|")
 	fmt.Println("                      __/ |      ")
 	fmt.Println("                     |___/       ")
-	fmt.Println()
 	fmt.Println(name, version)
+	fmt.Println()
 }
